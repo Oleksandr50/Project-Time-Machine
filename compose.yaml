@@ -1,0 +1,41 @@
+name: "${COMPOSE_PROJECT_NAME:?Run python3 scripts/docker_prepare.py first}"
+services:
+  app:
+    build: .
+    image: "${PTM_IMAGE:-project-time-machine:0.7.0}"
+    # Linux host networking preserves real loopback for the localhost-only setup wizard.
+    # No ports are published; the application itself binds 127.0.0.1.
+    network_mode: host
+    user: "${PTM_UID:-1000}:${PTM_GID:-1000}"
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    restart: unless-stopped
+    environment:
+      PTM_PORT: "${PTM_PORT:-13011}"
+      PTM_HOST: "127.0.0.1"
+      PTM_CONFIG: /config/settings.json
+      PTM_MANAGED_ID: "${COMPOSE_PROJECT_NAME}"
+    volumes:
+      - type: bind
+        source: "${PTM_STATE_DIR:-./docker-state}"
+        target: /state
+        bind: {create_host_path: false}
+      - type: bind
+        source: "${PTM_PROJECTS_DIR:-./docker-projects}"
+        target: /projects
+        bind: {create_host_path: false}
+      - type: bind
+        source: "${PTM_CONFIG_DIR:-./docker-config}"
+        target: /config
+        read_only: true
+        bind: {create_host_path: false}
+      - type: bind
+        source: "${PTM_KEYS_DIR:-./docker-keys}"
+        target: /keys
+        read_only: true
+        bind: {create_host_path: false}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=128m

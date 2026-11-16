@@ -1,0 +1,84 @@
+{% macro csrf() %}<input type="hidden" name="csrf_token" value="{{ request.state.csrf_token }}">{% endmacro %}
+{% macro scope() %}{% if request.state.project %}<input type="hidden" name="project_id" value="{{ request.state.project.id }}">{% endif %}{% endmacro %}
+{% macro text(value,limit=55) %}{% if value is not none and value != '' %}<span class="copy-value"><span class="truncate mono" title="{{ value }}">{{ value|compact(limit) }}</span><button type="button" class="icon-button copy" data-copy="{{ value }}" aria-label="{{ t('common.copy') }}" title="{{ t('common.copy') }}">⧉</button></span>{% else %}<span class="muted">—</span>{% endif %}{% endmacro %}
+{% macro badge(value,prefix='state.') %}<span class="badge badge-{{ value }}" data-status="{{ value }}">{{ t(prefix ~ value) }}</span>{% endmacro %}
+{% macro password(name,label,required=true,new=false) %}<label>{{ t(label) }}<input name="{{ name }}" type="password" {% if required %}required{% endif %} maxlength="512" {% if new %}minlength="12"{% endif %} autocomplete="{{ 'new-password' if new else 'current-password' }}"></label>{% endmacro %}
+{% macro preferences() %}<form method="post" action="/account/preferences" class="preferences-form">{{ csrf() }}<input type="hidden" name="return_to" value="{{ return_to }}">
+<label>{{ t('settings.language') }}<select name="locale">{% for code,name in language_options %}<option value="{{ code }}" {% if code==locale %}selected{% endif %}>{{ name }}</option>{% endfor %}</select></label>
+<label>{{ t('settings.theme') }}<select name="theme" data-theme-select>{% for value in ['system','dark','light'] %}<option value="{{ value }}" {% if value==theme %}selected{% endif %}>{{ t('settings.' ~ value) }}</option>{% endfor %}</select></label>
+<label>{{ t('settings.scale') }}<select name="scale">{% for value in range(80,141,10) %}<option value="{{ value }}" {% if value==scale %}selected{% endif %}>{{ value }}%</option>{% endfor %}</select></label><button class="btn" type="submit">{{ t('common.save') }}</button></form>{% endmacro %}
+{% macro operations(snapshot=false,backup=false,comment=false) %}{% if request.state.user.role in ('administrator','operator') and request.state.project %}<div class="actions">
+{% if snapshot %}<form method="post" action="{{ url('/actions/analyze') }}">{{ csrf() }}<label {% if not comment %}hidden{% endif %}>{{ t('common.description') }}<input name="description" maxlength="200" placeholder="{{ t('common.description') }}" {% if not comment %}disabled{% endif %}></label><button class="btn primary" type="submit"><span>+</span>{{ t('snapshots.create') }}</button></form>{% endif %}
+{% if backup %}<form method="post" action="{{ url('/actions/backup') }}">{{ csrf() }}<button class="btn" type="submit">{{ t('backup.create') }}</button></form>{% endif %}</div>{% endif %}{% endmacro %}
+{% macro table_filters(table,snapshots=none,snapshot_id=none,filters=none,show_prefix=false,compare=false) %}
+<form method="get" class="filters" data-filters>{{ scope() }}{% if section is defined %}<input type="hidden" name="section" value="{{ section }}">{% endif %}
+{% if compare %}<input type="hidden" name="a" value="{{ a_id }}"><input type="hidden" name="b" value="{{ b_id }}">{% endif %}
+{% if snapshots is not none %}<label>{{ t('common.snapshot') }}<input name="snapshot_id" type="number" min="1" list="snapshot-list" value="{{ snapshot_id or '' }}"><datalist id="snapshot-list">{% for s in snapshots %}<option value="{{ s.id }}">{{ s.created_at }}</option>{% endfor %}</datalist></label>{% endif %}
+{% if request.url.path=='/audit' %}
+<label>{{ t('audit.baseline') }}<input name="baseline" type="number" min="1" value="{{ baseline or '' }}"></label>
+<label>{{ t('common.changes') }}<select name="audit_change"><option value="">{{ t('common.all') }}</option>{% for change in ['new','resolved','persistent'] %}<option value="{{ change }}" {% if request.query_params.get('audit_change','new' if request.query_params.get('new_only')=='1' else '')==change %}selected{% endif %}>{{ t('audit.change.' ~ change) }}</option>{% endfor %}</select></label>
+<label>{{ t('common.category') }}<select name="category"><option value="">{{ t('common.all') }}</option>{% for group in groups %}<option value="{{ group.category }}" {% if request.query_params.get('category')==group.category %}selected{% endif %}>{{ t('audit.category.' ~ group.category) }} ({{ group.count }})</option>{% endfor %}</select></label>
+<label>{{ t('audit.review') }}<select name="review"><option value="">{{ t('common.all') }}</option>{% for state in ['open','false_positive'] %}<option value="{{ state }}" {% if request.query_params.get('review')==state %}selected{% endif %}>{{ t('audit.' ~ state) }}</option>{% endfor %}</select></label>
+{% elif request.url.path=='/functions' %}
+<label>{{ t('common.type') }}<select name="entity">{% for key in ['functions','classes','all'] %}<option value="{{ key }}" {% if entity==key %}selected{% endif %}>{{ t('common.' ~ key) }}</option>{% endfor %}</select></label>
+<label>{{ t('analysis.scope') }}<select name="scope"><option value="">{{ t('common.all') }}</option>{% for key in ['active','archived','generated','dependencies'] %}<option value="{{ key }}" {% if scope==key %}selected{% endif %}>{{ t('scope.' ~ key) }}</option>{% endfor %}</select></label>
+{% endif %}
+<label class="search-label">{{ t('common.search') }}<input type="search" name="q" value="{{ table.query }}" placeholder="{{ t('common.search_hint') }}" maxlength="300"></label>
+{% if filters %}<label>{{ t('common.filter') }}<select name="kind"><option value="">{{ t('common.all') }}</option>{% for value,key in filters %}<option value="{{ value }}" {% if table.filter_value==value %}selected{% endif %}>{{ t(key) }}</option>{% endfor %}</select></label>{% endif %}
+{% if show_prefix %}<label>{{ t('files.prefix') }}<input name="prefix" value="{{ request.query_params.get('prefix','') }}" maxlength="500"></label>{% endif %}
+<label>{{ t('common.sort') }}<select name="sort">{% for c in table.columns %}<option value="{{ c.key }}" {% if c.key==table.sort %}selected{% endif %}>{{ t(c.label) }}</option>{% endfor %}</select></label>
+<label>{{ t('common.sort') }}<select name="order"><option value="asc" {% if table.order=='asc' %}selected{% endif %}>{{ t('common.asc') }}</option><option value="desc" {% if table.order=='desc' %}selected{% endif %}>{{ t('common.desc') }}</option></select></label>
+<label>{{ t('common.per_page') }}<select name="per_page">{% for n in [10,25,50,100] %}<option {% if n==table.per_page %}selected{% endif %}>{{ n }}</option>{% endfor %}</select></label>
+<button type="submit" class="btn primary">{{ t('common.apply') }}</button><a class="btn" href="{{ url(request.url.path, snapshot_id=snapshot_id if snapshot_id else none, a=a_id if compare else none, b=b_id if compare else none) }}">{{ t('common.reset') }}</a></form>
+{% endmacro %}
+{% macro data_table(table,snapshot_id=none) %}
+{% set chosen=request.query_params.get('columns','').split(',') %}
+<section class="table-card" data-table data-table-key="{{ request.url.path }}-{{ table.columns[0].key }}">
+<div class="table-toolbar"><span class="muted">{{ t('common.results',total=table.total) }}</span><details class="column-picker"><summary>{{ t('common.columns') }}</summary><div>{% for c in table.columns %}<label><input type="checkbox" data-column-toggle="{{ c.key }}" {% if chosen==[''] or c.key in chosen %}checked{% endif %}>{{ t(c.label) }}</label>{% endfor %}</div></details></div>
+<div class="table-scroll" tabindex="0" role="region" aria-label="{{ t(title_key or 'common.results',total=table.total) }}"><table class="table"><thead><tr>{% for c in table.columns %}<th scope="col" data-column="{{ c.key }}" {% if chosen!=[''] and c.key not in chosen %}hidden{% endif %}><a href="{{ page_url(sort=c.key,order='asc' if table.sort!=c.key or table.order=='desc' else 'desc',page=1) }}">{{ t(c.label) }}{% if table.sort==c.key %} {{ '↑' if table.order=='asc' else '↓' }}{% endif %}</a></th>{% endfor %}</tr></thead><tbody>
+{% for row in table.rows %}<tr>{% for c in table.columns %}{% set v=row.get(c.key) %}<td data-column="{{ c.key }}" {% if chosen!=[''] and c.key not in chosen %}hidden{% endif %}>
+{% if c.kind=='hash' %}{{ text(v,22) }}
+{% elif c.kind=='path' %}{{ text(v|redact if c.key=='signature' else v) }}
+{% elif c.kind=='bytes' %}<span class="tabular">{{ v|bytes }}</span>
+{% elif c.kind=='number' %}<span class="tabular">{{ v if v is not none and not (row.get('backup_point_id') and c.key in ['functions_count','classes_count']) else '—' }}</span>
+{% elif c.kind=='date' %}<time class="date" title="{{ v or '' }}">{{ (v or '—')|replace('T',' ')|compact(22) }}</time>
+{% elif c.kind=='epoch' %}<time class="date">{{ v|utc }}</time>
+{% elif c.kind=='role' %}{{ t('role.' ~ v) }}
+{% elif c.kind=='enabled' %}{{ badge('active' if v else 'disabled') }}
+{% elif c.kind=='state' %}{{ badge(v) }}
+{% elif c.kind=='severity' %}{{ badge(v,'severity.') }}
+{% elif c.kind=='risk' %}{{ badge(v,'risk.') }}
+{% elif c.kind=='event' %}{{ v|event }}
+{% elif c.kind=='outcome' %}{{ t('outcome.' ~ v) }}
+{% elif c.kind=='details' %}<span class="wrap-text">{{ v|details }}</span>
+{% elif c.kind=='message' %}<span class="wrap-text">{{ v|localize|redact }}</span>
+{% elif c.kind=='file' %}{{ t('file.' ~ v) }}
+{% elif c.kind=='backup_kind' %}{{ t('engine.kind.' ~ (v or 'legacy')) }}
+{% elif c.kind=='restore_entry' %}{{ t('restore.type.' ~ v) }}
+{% elif c.kind=='entity' %}{{ t('entity.' ~ v) }}
+{% elif c.kind=='audit_category' %}{{ t('audit.category.' ~ v) }}
+{% elif c.kind=='change' %}{{ badge(v,'compare.') }}
+{% elif c.kind=='download' %}{% if v %}<a class="btn small" href="{{ url('/backups/download',id=v) }}">{{ t('backup.download') }}</a>{% else %}—{% endif %}
+{% elif c.kind=='file_link' %}<div class="copy-value"><a class="truncate mono" title="{{ v }}" href="{{ url('/file',snapshot_id=snapshot_id,path=v) }}">{{ v|compact(55) }}</a><button type="button" class="icon-button" data-copy="{{ v }}" aria-label="{{ t('common.copy') }}">⧉</button></div>
+{% elif c.kind=='project_link' %}<a class="project-name" href="{{ url('/',project_id=row.id) }}">{{ v }}</a>
+{% elif c.kind=='compare_link' %}<a class="truncate mono" title="{{ v }}" href="{{ url('/compare/text',a=a_id,b=b_id,path=v) }}">{{ v|compact(55) }}</a>
+{% elif c.kind=='log_link' %}<a class="truncate mono" title="{{ v }}" href="{{ url('/logs/view',path=v) }}">{{ v|compact(55) }}</a>
+{% elif c.kind=='database_link' %}<a class="truncate mono" title="{{ v }}" href="{{ url('/sqlite',path=v) }}">{{ v|compact(55) }}</a>
+{% elif c.kind=='scope' %}{{ t('scope.' ~ v) }}
+{% elif c.kind=='audit_lines' %}{{ v if v else (row.lineno if row.lineno is not none else '—') }}
+{% elif c.kind=='audit_message' %}<span class="wrap-text">{{ v|localize|redact }}</span><details class="audit-explanation"><summary>{{ t('common.details') }}</summary><h4>{{ t('audit.why') }}</h4><p class="wrap-text">{{ row.why|localize|redact }}</p><h4>{{ t('audit.fix') }}</h4><p class="wrap-text">{{ row.fix|localize|redact }}</p></details>
+{% elif c.kind=='audit_status' %}{{ t('audit.' ~ v) }}
+{% elif c.kind=='audit_review' %}{% if request.state.user.role in ('administrator','operator') %}<form method="post" action="{{ url('/audit/review') }}">{{ csrf() }}<input type="hidden" name="snapshot_id" value="{{ row.snapshot_id }}"><input type="hidden" name="fingerprint" value="{{ v }}"><input type="hidden" name="status" value="{{ 'open' if row.review_status=='false_positive' else 'false_positive' }}"><button class="btn small">{{ t('audit.reopen' if row.review_status=='false_positive' else 'audit.mark_false') }}</button></form>{% else %}—{% endif %}
+{% else %}<span class="wrap-text">{{ v if v is not none and v != '' else '—' }}</span>{% endif %}</td>{% endfor %}</tr>
+{% else %}<tr><td colspan="{{ table.columns|length }}" class="empty-cell">{{ t('common.no_results') }}</td></tr>{% endfor %}
+</tbody></table></div>
+<nav class="pagination" aria-label="{{ t('common.page',page=table.page,pages=table.pages) }}"><span class="muted">{{ t('common.page',page=table.page,pages=table.pages) }}</span><div>{% if table.page>1 %}<a class="btn" rel="prev" href="{{ page_url(page=table.page-1) }}">← {{ t('common.previous') }}</a>{% endif %}{% if table.page<table.pages %}<a class="btn" rel="next" href="{{ page_url(page=table.page+1) }}">{{ t('common.next') }} →</a>{% endif %}</div></nav></section>
+{% endmacro %}
+{% macro project_form(project=none) %}<form method="post" action="{{ url('/projects/edit') if project else '/projects/add' }}" class="form-grid">{{ csrf() }}
+{% if project %}<input type="hidden" name="project_id" value="{{ project.id }}">{% endif %}
+<label>{{ t('common.name') }}<input name="name" value="{{ project.name if project else '' }}" maxlength="200" {% if project %}required{% endif %}></label><label>{{ t('common.category') }}<input name="category" value="{{ project.category if project else 'other' }}" maxlength="80" required></label>
+<label class="span-all">{{ t('common.description') }}<textarea name="description" maxlength="4000" rows="2">{{ project.description if project else '' }}</textarea></label>
+{% if not project %}<label class="span-all">{{ t('projects.absolute') }}<input name="path" placeholder="/srv/projects/my-project" required></label>{% else %}
+<label class="span-all">{{ t('projects.exclusions') }}<textarea name="exclusions" rows="6">{{ project.exclusion_rules|join('\n') }}</textarea></label><p class="muted span-all">{{ t('projects.exclusions_hint') }}</p>
+{% for key in ['python_analysis','analyze_archived','analyze_generated','analyze_dependencies'] %}<label class="check"><input type="checkbox" name="{{ key }}" {% if project.scan_settings.get(key,key=='python_analysis') %}checked{% endif %}>{{ t('projects.' ~ key) }}</label>{% endfor %}
+{% endif %}<div class="span-all"><button class="btn primary" type="submit">{{ t('common.save') if project else t('projects.add') }}</button></div></form>{% endmacro %}

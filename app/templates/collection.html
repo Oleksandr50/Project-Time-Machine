@@ -1,0 +1,2 @@
+{% extends 'base.html' %}{% block content %}<div class="pagehead"><div><h1>{{ t(title_key) }}</h1>{% if hint %}<p class="subtitle">{{ t(hint) }}</p>{% endif %}</div>{{ m.operations(snapshot=snapshot_action,backup=backup_action,comment=snapshot_action) }}</div>
+<section class="card filter-card">{{ m.table_filters(table,snapshots if snapshots is defined else none,snapshot_id if snapshot_id is defined else none,filters,show_prefix) }}</section>{{ m.data_table(table,snapshot_id) }}{% endblock %}

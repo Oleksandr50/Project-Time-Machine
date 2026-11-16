@@ -1,0 +1,39 @@
+name: Public tests and candidate
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12', '3.13']
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '${{ matrix.python }}'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -B scripts/run_tests.py --public
+      - if: matrix.python == '3.11'
+        run: python -B scripts/verify_installation.py --source .
+      - run: python -B scripts/build_release.py --scan . --history
+      - run: python -B scripts/build_release.py --output dist
+  powershell-syntax:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - shell: pwsh
+        run: |
+          foreach ($path in @('Install-Windows.ps1', 'Start-Windows.ps1')) {
+            $errors = $null; $tokens = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $pwd $path), [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count) { throw ($errors | Out-String) }
+          }

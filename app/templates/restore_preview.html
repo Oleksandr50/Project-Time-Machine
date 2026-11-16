@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block content %}<div class="pagehead"><div><h1>{{ t('restore.preview_title') }}</h1><p class="subtitle">{{ t('restore.preview_hint') }}</p></div><a class="btn" href="{{ url('/restore') }}">{{ t('common.back') }}</a></div>
+<section class="card"><h2>{{ t('restore.target') }}</h2><p>{{ m.text(preview.spec.target,90) }}</p>
+{% if preview.spec.action=='restore' %}<p class="metadata-line">{{ t('restore.source') }} · {{ t('engine.kind.' ~ preview.spec.source.backup_kind) if preview.spec.source.backup_kind else t('nav.snapshots') if preview.spec.source.kind=='cas' else t('engine.kind.legacy') }} · {{ preview.spec.source.created_at }}</p>{{ m.text(preview.spec.source.id,55) }}{% if preview.spec.source.requested_snapshot %}<p>Snapshot #{{ preview.spec.source.requested_snapshot }}</p>{% endif %}<p class="wrap-text">{{ preview.spec.source.description|redact }}</p>{% else %}<p class="metadata-line">{{ t('restore.operation') }}: {{ preview.spec.operation_id }}</p>{% endif %}
+<div class="actions">{% for kind in ['added','modified','deleted'] %}<span class="badge">{{ t('compare.' ~ kind) }}: {{ counts[kind] }}</span>{% endfor %}</div>
+{% if preview.spec.action=='restore' and preview.spec.source.kind=='legacy' %}<p class="notice warning">{{ t('restore.legacy_warning') }}</p>{% endif %}
+{% if preview.spec.processes.pids %}<p class="notice danger">{{ t('restore.process_warning') }} {{ preview.spec.processes.pids|join(', ') }}</p>{% endif %}
+{% if not preview.spec.processes.complete %}<p class="notice warning">{{ t('restore.process_incomplete') }}</p>{% endif %}
+<p class="notice warning">{{ t('restore.insurance_hint') }}</p><p class="muted">{{ t('restore.scope_hint') }}</p></section>
+{{ m.data_table(table) }}
+<section class="card"><h2>{{ t('restore.confirm_title') }}</h2><p>{{ t('restore.atomic_hint') }}</p><form method="post" action="{{ url('/restore/confirm') }}" class="stack">{{ m.csrf() }}
+<input type="hidden" name="preview_id" value="{{ preview.id }}"><input type="hidden" name="confirmation_token" value="{{ preview.token }}">
+<label class="check"><input type="checkbox" name="acknowledge" required>{{ t('restore.acknowledge') }}</label>
+<label>{{ t('restore.confirm_word') }}<input name="confirmation" pattern="RESTORE" autocomplete="off" required></label>
+<button type="submit" class="btn danger" {% if preview.spec.processes.pids %}disabled{% endif %}>{{ t('restore.start_undo') if preview.spec.action=='undo' else t('restore.start') }}</button></form></section>{% endblock %}

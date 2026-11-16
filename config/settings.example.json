@@ -1,0 +1,38 @@
+{
+  "config_dir": "/opt/project-time-machine/config",
+  "data_dir": "/var/lib/project-time-machine/state",
+  "db_path": "/var/lib/project-time-machine/state/unselected.sqlite",
+  "reports_dir": "/var/lib/project-time-machine/reports",
+  "metadata_dir": "/var/lib/project-time-machine/snapshot-metadata",
+  "content_dir": "/var/lib/project-time-machine/content",
+  "backups_dir": "/var/lib/project-time-machine/backups",
+  "migrations_dir": "/var/lib/project-time-machine/migration-backups",
+  "logs_dir": "/var/log/project-time-machine",
+  "temp_dir": "/var/lib/project-time-machine/tmp",
+  "allowed_roots": [
+    "/srv/projects"
+  ],
+  "archive_roots": [],
+  "protected_roots": [],
+  "management_networks": [
+    "0.0.0.0/0",
+    "::/0"
+  ],
+  "trusted_hosts": [
+    "localhost",
+    "127.0.0.1",
+    "::1"
+  ],
+  "trusted_proxies": [],
+  "session_idle_seconds": 1800,
+  "session_absolute_seconds": 43200,
+  "login_attempt_limit": 5,
+  "login_window_seconds": 300,
+  "require_https_remote": true,
+  "backup_reserve_bytes": 67108864,
+  "max_parallel_jobs": 2,
+  "job_poll_seconds": 2,
+  "encryption_keys": {},
+  "lan_access": true,
+  "remote_setup": true
+}

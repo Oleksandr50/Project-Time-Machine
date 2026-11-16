@@ -1,0 +1,25 @@
+{% extends 'base.html' %}{% block content %}<div class="pagehead"><div><h1>{{ t('restore.title') }}</h1><p class="subtitle">{{ t('restore.wizard_hint') }}</p></div><a class="btn" href="{{ url('/backups') }}">{{ t('nav.backups') }}</a></div>
+{% if can_restore %}
+<section class="card"><h2>{{ t('restore.choose') }}</h2><form method="post" action="{{ url('/restore/preview') }}" class="form-grid">{{ m.csrf() }}
+<label class="span-all">{{ t('restore.source') }}<select name="source" required>
+{% if points %}<optgroup label="{{ t('engine.points') }}">{% for p in points %}<option value="point:{{ p.id }}" {% if request.query_params.get('source')=='point:' ~ p.id %}selected{% endif %}>#{{ p.backup_id }} · {{ t('engine.kind.' ~ p.kind) }} · {{ p.created_at }}</option>{% endfor %}</optgroup>{% endif %}
+{% if snapshots %}<optgroup label="{{ t('nav.snapshots') }}">{% for s in snapshots %}<option value="snapshot:{{ s.id }}" {% if request.query_params.get('source')=='snapshot:' ~ s.id %}selected{% endif %}>Snapshot #{{ s.id }} · {{ s.description or s.created_at }}</option>{% endfor %}</optgroup>{% endif %}
+{% if legacy %}<optgroup label="{{ t('engine.kind.legacy') }}">{% for b in legacy %}<option value="legacy:{{ b.id }}" {% if request.query_params.get('source')=='legacy:' ~ b.id %}selected{% endif %}>#{{ b.id }} · {{ b.created_at }}</option>{% endfor %}</optgroup>{% endif %}
+</select></label>
+<label>{{ t('restore.mode') }}<select name="mode">{% for k in ['full','files','alternate'] %}<option value="{{ k }}">{{ t('restore.mode.' ~ k) }}</option>{% endfor %}</select></label>
+<label>{{ t('restore.destination') }}<input name="destination" placeholder="/srv/projects/restored-copy"></label>
+<label class="span-all">{{ t('restore.files_label') }}<textarea name="paths" rows="4" maxlength="16000" placeholder="src/main.py&#10;README.md"></textarea></label>
+<p class="muted span-all">{{ t('restore.selection_hint') }}</p><button type="submit" class="btn primary" {% if not points and not snapshots and not legacy %}disabled{% endif %}>{{ t('restore.preview_button') }}</button></form></section>
+{% else %}<section class="card"><p>{{ t('restore.readonly') }}</p></section>{% endif %}
+<p class="notice warning">{{ t('restore.scope_hint') }}</p>
+<section class="card"><div class="section-heading"><h2>{{ t('restore.history') }}</h2><a class="btn small" href="{{ url('/restore') }}">{{ t('engine.refresh') }}</a></div>
+{% for op in operations %}<details class="point-row" {% if op.state=='interrupted' %}open{% endif %}><summary>{{ t('restore.state.' ~ op.state) }} · {{ op.created_at|utc }}</summary>
+<p>{{ m.text(op.target_path,90) }}</p><p>{{ t('restore.operation') }}: {{ m.text(op.id) }}</p>
+{% if op.safety_point_id %}<p>{{ t('restore.insurance') }}: {{ m.text(op.safety_point_id) }}</p>{% endif %}
+{% if op.state in ['committed','rolled_back','superseded'] %}<p class="muted">{{ t('restore.retained') }}</p>{% endif %}
+{% if op.error_code %}<p class="notice warning">{{ t('engine.' ~ op.error_code) }}</p>{% endif %}
+{% if op.state=='interrupted' and can_restore %}<p>{{ t('restore.recovery_hint') }}</p>
+{% for method in ['undo','insurance'] %}<form method="post" action="{{ url('/restore/recovery-preview') }}" class="actions">{{ m.csrf() }}<input type="hidden" name="operation_id" value="{{ op.id }}"><input type="hidden" name="method" value="{{ method }}"><button type="submit" class="btn">{{ t('restore.recover.' ~ method) }}</button></form>{% endfor %}
+{% elif op.state in ['queued','preparing','applying','undoing'] %}<p>{{ t('restore.running_hint') }}</p>{% endif %}</details>
+{% else %}<p class="muted">{{ t('common.empty') }}</p>{% endfor %}
+<nav class="pagination"><span>{{ t('common.page',page=history.page,pages=history.pages) }} · {{ t('common.results',total=history.total) }}</span><div>{% if history.page>1 %}<a class="btn" href="{{ page_url(history_page=history.page-1) }}">{{ t('common.previous') }}</a>{% endif %}{% if history.page<history.pages %}<a class="btn" href="{{ page_url(history_page=history.page+1) }}">{{ t('common.next') }}</a>{% endif %}</div></nav></section>{% endblock %}

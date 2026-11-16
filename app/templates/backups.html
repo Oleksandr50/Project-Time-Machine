@@ -1,0 +1,48 @@
+{% extends 'base.html' %}{% block content %}
+<div class="pagehead"><div><h1>{{ t('nav.backups') }}</h1><p class="subtitle">{{ t('engine.hint') }}</p></div></div>
+<p class="notice warning">{{ t('engine.source_consistency') }}</p>
+{% if policy.secret_policy in ['warn','local'] and not policy.key_id %}<p class="notice warning">{{ t('engine.secrets_warning') }}</p>{% endif %}
+{% if request.state.user.role in ['administrator','operator'] %}
+<section class="card"><h2>{{ t('backup.create') }}</h2><form method="post" action="{{ url('/actions/backup') }}" class="form-grid">{{ m.csrf() }}
+<label>{{ t('common.type') }}<select name="kind">{% for k in ['full','incremental','checkpoint'] %}<option value="{{ k }}">{{ t('engine.kind.' ~ k) }}</option>{% endfor %}</select></label>
+<label>{{ t('common.description') }}<input name="description" maxlength="4000"></label><button type="submit" class="btn primary">{{ t('engine.queue') }}</button></form>
+<form method="post" action="{{ url('/actions/verify') }}" class="actions">{{ m.csrf() }}<button class="btn" type="submit">{{ t('engine.verify_all') }}</button></form></section>{% endif %}
+<section class="card"><div class="section-heading"><h2>{{ t('dashboard.tasks') }}</h2><a class="btn small" href="{{ url('/backups') }}">{{ t('engine.refresh') }}</a></div>
+<div data-job-list data-jobs-url="{{ url('/api/jobs') }}">
+{% for job in jobs %}<div class="job-row" data-job-id="{{ job.id }}" data-job-state="{{ job.state }}">
+<div class="key-value"><strong>{{ t('engine.task.' ~ job.task) }}{% if job.task=='backup' %} · {{ t('engine.kind.' ~ job.kind) }}{% endif %}</strong><span class="badge" data-job-label>{{ t('engine.state.' ~ job.state) }}</span></div>
+<p class="muted">{{ job.created_at|utc }} · {{ job.description }}</p>
+{% if job.state in ['queued','running'] %}<progress data-job-progress max="{{ [job.total_bytes,1]|max }}" value="{{ job.progress_bytes }}"></progress><p data-job-counts>{{ job.progress_files }} / {{ job.total_files }} · {{ job.progress_bytes|bytes }} / {{ job.total_bytes|bytes }}</p>
+{% if request.state.user.role in ['administrator','operator'] %}<form method="post" action="{{ url('/actions/cancel') }}">{{ m.csrf() }}<input type="hidden" name="job_id" value="{{ job.id }}"><button class="btn small" type="submit">{{ t('engine.cancel') }}</button></form>{% endif %}
+{% endif %}{% if job.error_code %}<p class="notice warning">{{ t('engine.' ~ job.error_code) }}</p>{% endif %}</div>
+{% else %}<p class="muted">{{ t('common.empty') }}</p>{% endfor %}</div><p class="notice" data-job-completed hidden>{{ t('engine.completed') }}</p>
+<nav class="pagination"><span>{{ t('common.page',page=job_history.page,pages=job_history.pages) }} · {{ t('common.results',total=job_history.total) }}</span><div>{% if job_history.page>1 %}<a class="btn" href="{{ page_url(jobs_page=job_history.page-1) }}">{{ t('common.previous') }}</a>{% endif %}{% if job_history.page<job_history.pages %}<a class="btn" href="{{ page_url(jobs_page=job_history.page+1) }}">{{ t('common.next') }}</a>{% endif %}</div></nav></section>
+<section class="card filter-card">{{ m.table_filters(table,filters=filters) }}</section>{{ m.data_table(table) }}
+<section class="card"><h2>{{ t('engine.points') }}</h2><p class="muted">{{ t('engine.chain_hint') }}</p>
+{% for point in points %}<details class="point-row"><summary>{{ t('engine.kind.' ~ point.kind) }} · {{ point.created_at }} · #{{ point.backup_id }}{% if point.protected %} · {{ t('engine.protected') }}{% endif %}{% if point.state!='available' %} · {{ t('engine.point.' ~ point.state) }}{% endif %}</summary>
+<p>{{ t('engine.last_verified') }}: {{ point.verified_at }}</p><p>{{ t('engine.point_id') }}: {{ m.text(point.id) }}</p>
+{% if point.parent_id %}<p>{{ t('engine.parent') }}: {{ m.text(point.parent_id) }}</p>{% endif %}
+{% if point.key_id %}<p>{{ t('engine.encryption') }}: {{ point.key_id }}</p>{% endif %}{% if point.last_error %}<p class="notice danger">{{ t('engine.' ~ point.last_error) }}</p>{% endif %}
+{% if point.state=='available' and request.state.user.role in ['administrator','operator'] %}<form method="post" action="{{ url('/actions/verify') }}">{{ m.csrf() }}<input type="hidden" name="point_id" value="{{ point.id }}"><button type="submit" class="btn small">{{ t('engine.verify') }}</button></form>{% endif %}
+{% if point.state=='available' and request.state.user.role=='administrator' %}<form method="post" action="{{ url('/backups/protect') }}" class="form-grid">{{ m.csrf() }}<input type="hidden" name="point_id" value="{{ point.id }}"><label class="check"><input type="checkbox" name="protected" {% if point.protected %}checked{% endif %}>{{ t('engine.protected') }}</label>{{ m.password('current_password','auth.current') }}<button class="btn" type="submit">{{ t('common.save') }}</button></form>{% endif %}</details>
+{% else %}<p class="muted">{{ t('common.empty') }}</p>{% endfor %}</section>
+{% if request.state.user.role=='administrator' %}
+<section class="card"><h2>{{ t('engine.storage_policy') }}</h2><form method="post" action="{{ url('/backups/policy') }}" class="form-grid">{{ m.csrf() }}
+<label>{{ t('engine.secrets') }}<select name="secret_policy">{% for k in ['warn','local','exclude'] %}<option value="{{ k }}" {% if policy.secret_policy==k %}selected{% endif %}>{{ t('engine.secrets.' ~ k) }}</option>{% endfor %}</select></label>
+<label>{{ t('engine.encryption') }}<select name="key_id"><option value="">{{ t('engine.no_encryption') }}</option>{% for key in key_ids %}<option value="{{ key }}" {% if policy.key_id==key %}selected{% endif %}>{{ key }}</option>{% endfor %}</select></label><p class="muted span-all">{{ t('engine.key_hint') }}</p>
+<label class="check"><input type="checkbox" name="auto_delete" {% if policy.auto_delete %}checked{% endif %}>{{ t('engine.auto_delete') }}</label>
+<label>{{ t('engine.keep_last') }}<input type="number" name="keep_last" min="1" max="100000" value="{{ policy.keep_last }}" required></label>
+<label>{{ t('engine.min_age') }}<input type="number" name="min_age_days" min="0" max="36500" value="{{ policy.min_age_days }}" required></label>
+{{ m.password('current_password','auth.current') }}<button class="btn primary" type="submit">{{ t('common.save') }}</button></form></section>
+<section class="card"><h2>{{ t('engine.schedules') }}</h2><p class="muted">{{ t('engine.schedule_hint') }}</p>
+{% for task in ['backup','snapshot','verify','retention'] %}{% set found=schedules|selectattr('task','equalto',task)|list %}{% set schedule=found[0] if found else none %}
+<details><summary>{{ t('engine.task.' ~ task) }} · {{ t('common.yes') if schedule and schedule.enabled else t('common.no') }}</summary>
+{% if schedule %}<p>{{ t('engine.next_run') }}: {{ schedule.next_run|utc }}</p>{% endif %}
+<form method="post" action="{{ url('/backups/schedule') }}" class="form-grid">{{ m.csrf() }}<input type="hidden" name="task" value="{{ task }}">
+<label class="check"><input type="checkbox" name="enabled" {% if schedule and schedule.enabled %}checked{% endif %}>{{ t('engine.enable') }}</label>
+<label>{{ t('engine.interval') }}<select name="interval">{% for seconds in [86400,604800] %}<option value="{{ seconds }}" {% if schedule and schedule.interval_seconds==seconds %}selected{% endif %}>{{ t('engine.daily' if seconds==86400 else 'engine.weekly') }}</option>{% endfor %}</select></label>
+{% if task=='backup' %}<label>{{ t('common.type') }}<select name="kind">{% for kind in ['full','incremental'] %}<option value="{{ kind }}" {% if schedule and schedule.kind==kind %}selected{% endif %}>{{ t('engine.kind.' ~ kind) }}</option>{% endfor %}</select></label>{% endif %}
+{{ m.password('current_password','auth.current') }}<button class="btn" type="submit">{{ t('common.save') }}</button></form></details>{% endfor %}</section>
+<section class="card"><h2>{{ t('engine.cleanup') }}</h2><p class="notice warning">{{ t('engine.cleanup_hint') }}</p>
+<form method="post" action="{{ url('/backups/cleanup') }}" class="form-grid">{{ m.csrf() }}<label>{{ t('engine.confirm_label') }}<input name="confirm" pattern="delete" required></label>{{ m.password('current_password','auth.current') }}<button type="submit" class="btn danger" {% if not policy.auto_delete %}disabled{% endif %}>{{ t('engine.cleanup') }}</button></form></section>{% endif %}
+{% endblock %}

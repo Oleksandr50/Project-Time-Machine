@@ -1,0 +1,342 @@
+{
+  "status": "passed",
+  "version": "0.7.5",
+  "archive": "project-time-machine-0.7.5-linux.tar.gz",
+  "archive_bytes": 226428,
+  "archive_sha256": "fe349bc1160ca1d460ed7c75ae9542b95f55d77a8f24c0473ed34399a5366964",
+  "shared_files_count": 128,
+  "shared_files_sha256": {
+    "AUTHORS": "f5091d485e7ce9878b1f7c06a67aec0c6a871c32f9872a518a3b9d22c0b1b1fc",
+    "COPYRIGHT": "931561b171ed013484b546e314b74fd15b2da3352bfdc5e157a2e0438a29bd85",
+    "INSTALL.md": "5bd745191e85b77752b92840114a339fd48525e9c07ba02ff8f7b8780d6103de",
+    "INSTALL_EN.md": "05e3c36f943c649d4a118a2a0f1eb14ae4eb4f743a1004956dd067abcb45075c",
+    "INSTALL_PL.md": "fc0bb0f21495147675927d8b4989da81f80d46cf596346fe8019714de6705e59",
+    "INSTALL_UK.md": "d6e375283cfd379294d966bfe6bee29919fca6bb6f763c95febc229929827785",
+    "LICENSE": "a3dbfde2c0c804f2c0c199d39aa4be9c3d4e3a8ed6159f8ce274d2a6e73a09ab",
+    "THIRD_PARTY_NOTICES.md": "d95da59f35e536b23682ddbe03dec9859699ffbbdc814bb53cf3c642e359033b",
+    "app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app/__main__.py": "6f62337fc401c3e94da5c5bdf5f11196f78e4a1bc8561a00c3cb410620e083bd",
+    "app/access.py": "c053c8915b51f35b13df8ffa9960766aa7b2d3f1cc7812df5f82e693e5a50708",
+    "app/account_views.py": "0f2731d58e368fbfd62ac81d2139545cdd70e30f9c03d270159e3408d026d5c4",
+    "app/analysis_plugins.py": "a60b5102dcc1f5d91395419cbf4d0dc973bef50793cfb476755b18191705701c",
+    "app/analyzer.py": "0fc4f859fc19beb3ea5227cd512a4e39b9f751db9f60d3074867453b20864028",
+    "app/archives.py": "466ec5439fa0cc6267029f5e359e2519b4ee4ebc54c72c216cfc27e13d9f7972",
+    "app/audit_rules.py": "9c76cce621bb133c7bd4f7ce5ba8b1a02bacf53e8d15ff8afc59b307ee0a02bf",
+    "app/audit_service.py": "53f0e7c9930e128af94bbea65e60ad049dd5c82a6a7816ad7132246e988ba86e",
+    "app/auth.py": "75bdb38a48fd1b3928c2eba1723f2993d18450e2149d708e299bf1709abc920d",
+    "app/auth_routes.py": "23c0272ae35fab366577ea3fdb2a8d2c5fc8f5b816c540cd83d8efbf3722568b",
+    "app/backup_capture.py": "df29e121d1e061b3aecbfd00b8c9c0f65d1e644faa5c761813d9cd50ba748d55",
+    "app/backup_format.py": "e16cd5f6aaf06b871297c2561b9ff68fd9fe893efe02bb9fd478e9a703f431a3",
+    "app/backup_routes.py": "c6dd118b0899ec3afc9750618b4bb0a479910842a10bb26cd7a8152f5ff5f333",
+    "app/backup_storage.py": "900595bba754c817cb2178c658a245adc7eb8f004d7f519559fd5b32e7250e5d",
+    "app/backups.py": "1a019677c59c33d610aae2a1c3423abe17c3d4cff3196ef89a03ca8082605d54",
+    "app/config.py": "cab41aaa49e82982fe491811e077312260d4b690d33c3f5e8f15d7c5575fd7fc",
+    "app/data_views.py": "851a9309556a5d066ff3b3c36bd1ef18fe166dbf33f33299c5c9a80beb93655a",
+    "app/db.py": "a86c6af3a906f32c9e372527c556a0204782511e233caef0237303b765bbdeac",
+    "app/filesystem.py": "6cca0910daa12c7b338a35f0b67d6fa8bfd832838427df9e8f1839d3217a588c",
+    "app/i18n.py": "a8befa41c90f4a48928a81eb6a353a84c9df6beab5f4555078064cc80b175103",
+    "app/installation.py": "cefea759cc597acb18504a221f746655dc8adcbb46eb47f0a2e2c07ca071ec79",
+    "app/interfaces.py": "31d2e865db7ff0227a8cdf917db42a44cbf2deab2848485aaad02a648b0bd5d6",
+    "app/jobs.py": "651cd2a4169c3b81a3870bd5f975e3765e862ed510d75d975a5b578b4e52c020",
+    "app/lifecycle.py": "13eae06e99aa8cf0a0ec295ed19ab89cd598bbb40d91b5291ce32d882af5e7d8",
+    "app/locales/en.json": "872f6c01d100bc3977572ee43c038a33a9aa6d3b90876b6489b92076eb6d78d1",
+    "app/locales/pl.json": "02495cd01cabdaee74819abeb293a86dc9926aff20aa10b75772bf167551c9a1",
+    "app/locales/ru.json": "a2164bc857d98fbe2d30c9164bcdd5d556df90bea94bf15388845afd58fcf51e",
+    "app/locales/uk.json": "3b20726032f32d5a9a52b1b4bfe6dd23e93470b0edd25f390734f62328cc97e1",
+    "app/main.py": "9c4fe9490373a785e52c28e5b9d156851e75c911d6880e1482abae516107b1b5",
+    "app/maintenance.py": "76956c70aace50514c972a83a6385100b710201100619d512e339d6008f2cc66",
+    "app/maintenance_cli.py": "b8e9ad3209dbef055c5638ba2081d780eaf666fbc8dac10be8c97f1b799e3f6b",
+    "app/migrations.py": "9bbc0042df34d0afc1b065aaebd62f21cf4d324bcf727065fdc969603ab6934b",
+    "app/projects.py": "ec3078b6562373c2b1ba83e8c6bf871ec029a04db0423cdc3de25c4e184ff4d1",
+    "app/redaction.py": "343b9a864dbbf4a6370bdc194dc1c3eab16c5eea9aaf84cbb6202b8cac4a5ba1",
+    "app/responses.py": "f46ab4ca04af070ce7b9a4c26465d9b9bd3c2ccc9ab294c25cc805606fe05045",
+    "app/restore_fs.py": "04c05d1147b3261d8fca1becf2d5a10e74ad67b91a5d8849fd0f42a484bad69c",
+    "app/restore_routes.py": "d749da8c0e9b66d32dc8af1e658043bedc349395e043a9f0e3d82daea66eaedd",
+    "app/restore_sources.py": "7d69d39379265baf2d0de07b1ed15f35f8714146f6622562908adb11320b5ef8",
+    "app/restore_state.py": "d44a9b5fbbb0a3f76dd06506b57354396638854bee7704ab1d7537ff107c18db",
+    "app/restores.py": "571776e17138f9338c9503040766d7c79137164e644f46d68b40f610d9a22409",
+    "app/scanner.py": "d545db8f2b2413c4d75fcb20835eb90006efde36c7556e33cb98bf271fa0e467",
+    "app/schema.py": "edba1b67520407d9e7117a104f3045439f4fcd3544aa15aaf66db0608871bed0",
+    "app/security.py": "97785511021c4e2350e0150770ee25317085dcea09f42d7dbb6c23483864c7d2",
+    "app/selftest.py": "ea276f45d7c1df358f34fedd380eb964d0d459d9b2daf550866f56a9c878940d",
+    "app/services.py": "5c9a8fa7f849c6218145c460828feb3b15a6b3df39e500c9e414bad877f5a84d",
+    "app/setup_codes.py": "d327948d298333a270e280eff079ef8b99b3072b691db728e03694b8bdef9682",
+    "app/setup_config.py": "80f140000227c0a668c6fcd11fe687e879559f223a135d052b434b6073156932",
+    "app/static/css/app.css": "f76854e800498e3f42da629371ecdca5d35a9bccb9c10dab72a0a5df88aa972b",
+    "app/static/js/app.js": "771bf30be4bcd1f1337be70d9485b0f46d2778c8d4e915e3d7ed7577658c24fe",
+    "app/tables.py": "6d119c7646415ff6eae92ad2366d6010ae674035eaa0699704ca5c23499f9074",
+    "app/templates/_macros.html": "3ff787ed3858f2b2c81ae987c3df0bd8e047c027a1ba5a64315a793e9de51ba4",
+    "app/templates/account.html": "71bda12a8e4d9836d79ae84ef7b1c4b131d593fce0e80e17f8ce8f6f89baadf1",
+    "app/templates/analysis.html": "b341f694ed6a0a30a188ac75bf0131155bab21d411bd7cab0654c1481b84631a",
+    "app/templates/audit.html": "43a2af4f07a6944db4c2768caa3c111b57ea5b1877b3678899860c239fd13956",
+    "app/templates/auth.html": "aecb295a3167855d1cdd45032f490f64baa64496d8c3a65705054265bebc4ff5",
+    "app/templates/backups.html": "764011cec7f9f21628ce9700a295929598f634744fad9fac9723e69b05375ec3",
+    "app/templates/base.html": "b03e285d6964122090cc67cabd75dfaaeffea207ac704ee3f09fee8624d7f878",
+    "app/templates/collection.html": "1a0b1a47417b0316ac293f1b7bac1b4665221458f2042e4da2d165c9b9ee8d81",
+    "app/templates/compare.html": "a85fc6fa7414f7e749301d251597af25977b0831184a0dc230c01cf53416025d",
+    "app/templates/diff.html": "1f7de28e3b2c352bb8b838b0513fe824565102e1518dc3e6ea74e5cb1fa39a6c",
+    "app/templates/error.html": "9ba5d5aa5af25ae644a975d46a8d36cfd10a19776e72c552d3b06cc817cb9032",
+    "app/templates/file.html": "25d977bc1cc8914cfc6784b9bdf88365eabaa1f9aa534d1f329d6002eaa4b324",
+    "app/templates/files.html": "6f1c6ba6eacc4bb1379722cdbfbe688c033c7c32e5bb52524a81aab12111b247",
+    "app/templates/functions.html": "6f1c6ba6eacc4bb1379722cdbfbe688c033c7c32e5bb52524a81aab12111b247",
+    "app/templates/index.html": "548ccddace4c3a95e81b58eef748154f3ad51d4cdfab1a3b7786f5cde9e99437",
+    "app/templates/logs.html": "b440d43b9aabc6f36b6382916958d7e60f348c081fdad9c18e028bf544a37f8d",
+    "app/templates/projects.html": "6c1acf32f7c586d2affa68acf45b09485bc7d5a3dde4a8eb7ca5183491c5febe",
+    "app/templates/report.html": "7cbfb1b9aae45b35fc4987ef12bb191ccce474a743fae37f3fdfb8aa97950e2f",
+    "app/templates/restore.html": "f5f27f10f361d1f8e72ece7bbd906ae5d9083df1f23819b9134f5cbcce3c3913",
+    "app/templates/restore_preview.html": "efce0a43b1eacc6aa9e9bbc4d3fb811639083dac814fac1cbe7b15db1ea6c110",
+    "app/templates/settings.html": "e00716223877439f6ec4d735a830d58f3596fc074a3bb472c7df63275ea2830c",
+    "app/templates/snapshots.html": "6f1c6ba6eacc4bb1379722cdbfbe688c033c7c32e5bb52524a81aab12111b247",
+    "app/templates/sqlite.html": "359c7de37d69bb40729719c5eaf109744cd7455bf0d2bc45799db485cffb613c",
+    "app/templates/timeline.html": "6f1c6ba6eacc4bb1379722cdbfbe688c033c7c32e5bb52524a81aab12111b247",
+    "app/templates/users.html": "6c66516377a415b20b19cfdb3c19304a5b9860f95efbaefe8af9cb9c2086d843",
+    "app/ui.py": "a737f1af0eef2f70b4ee464aaf4b70c82867f4a7d6097185c2473dfcb5c07cf0",
+    "app/ui_routes.py": "ed33910106c19a0ab513296e1cbbc14d874d9930daa8f197b5cd2d51fd18424c",
+    "app/version.py": "f874b9f53102e229910bf739c42923190dab7e0ab04ba6e29687a1b2f14927ed",
+    "config/settings.example.json": "ed956893a57dc0777d31dbaf6cee6ce4df6a6c5ee9f24edc8347667c33b85867",
+    "install.sh": "3b6f0e983519ee056db5148b7ea166eaa58f12a272f3f5296144094b9f5609b6",
+    "requirements.lock": "e43aca48db23a9767f72cf3fb8e5649fbf397f6603287a3fe31f182cd681aeb3",
+    "requirements.txt": "4b838478fac50f282284a607d1adcc8878203956ecf1d79b055c0e87410a1840",
+    "scripts/generate_backup_key.py": "fafcb63cd7b60e62ec00ae05de9c6ce669048e5727b1e234d0787d8289efd83a",
+    "scripts/install.py": "4ecfed543db708b3fb8d4f34ee3ed66dd5d1a91a2b96ffc08186778fc0bd1a80",
+    "scripts/manage.py": "ce330932ae579beda95f7ab293b4fde341b4a17c33b0b192d62e3385d319eb2d",
+    "scripts/setup.py": "2776e72b9187170dc81932c2043a32f2d03fd69e3f6c294e9bd5bd1452b5d723",
+    "scripts/start.py": "52b11aaaa619f73773fe8568a7b9bfceb792737f4b4aefc9273b5dc46f238d0e",
+    "setup.sh": "1a80bbbac3c917a944f546d8ff5a777edc4306efa6ddb494e01a85cd6f9746fe",
+    "start.sh": "ee987ccc06357acf3e6ed1b14fa7546aa78ae85dd824dbd9bd373f9731429779",
+    "third_party/dependency-inventory.json": "2c804b40b2e0c93d17cfb444ea89ca7fdaed383a06358b5626adb62485b3b7a7",
+    "third_party/licenses/Jinja2/licenses/LICENSE.txt": "3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b",
+    "third_party/licenses/MarkupSafe/licenses/LICENSE.txt": "489a8e1108509ed98a37bb983e11e0f7e1d31f0bd8f99a79c8448e7ff37d07ea",
+    "third_party/licenses/aiofiles/licenses/LICENSE": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14",
+    "third_party/licenses/aiofiles/licenses/NOTICE": "104c58d1d450bd6474c09d8b64bc0182733a60ac3d8c253e334cde8294520ff1",
+    "third_party/licenses/annotated-doc/licenses/LICENSE": "fff170779a6acbf65abdb405c087f1cee1786691e4a96a4034517e4a504a0cdf",
+    "third_party/licenses/annotated-types/licenses/LICENSE": "fe1049884b1a0d9342901e88e07f32925d24b3121d9972b6a6805fb9824b095d",
+    "third_party/licenses/anyio/licenses/LICENSE": "5361ac9dc58f2ef5fd2e9b09c68297c17f04950909bbc8023bdb82eacf22c2b0",
+    "third_party/licenses/argon2-cffi-bindings/licenses/LICENSE": "88707653d5414f2242d597302a769565107ac139817b8ca321b3928cc1346c50",
+    "third_party/licenses/argon2-cffi/licenses/LICENSE": "b6944d386e87ccf49d9632da083685a4b7624733e686a7fe283dd2d428341d77",
+    "third_party/licenses/certifi/licenses/LICENSE": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7",
+    "third_party/licenses/cffi/licenses/LICENSE": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63",
+    "third_party/licenses/click/licenses/LICENSE.txt": "9a8ad106a394e853bfe21f42f4e72d592819a22805d991b5f3275029292b658d",
+    "third_party/licenses/cryptography/licenses/LICENSE": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb",
+    "third_party/licenses/cryptography/licenses/LICENSE.APACHE": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe",
+    "third_party/licenses/cryptography/licenses/LICENSE.BSD": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb",
+    "third_party/licenses/fastapi/licenses/LICENSE": "4ec89ffc81485b97fec584b2d4a961032eeffe834453894fd9c1274906cc744e",
+    "third_party/licenses/h11/licenses/LICENSE.txt": "37db5bb85926db28a427a25867f10b1232003aea1be69ccb851138adb8e6f361",
+    "third_party/licenses/httpcore/licenses/LICENSE.md": "fdcb59154c74cbaba16a11242f7740bea9f23d6feb5547917d8c5f94a80392a5",
+    "third_party/licenses/httpx/licenses/LICENSE.md": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d",
+    "third_party/licenses/idna/licenses/LICENSE.md": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04",
+    "third_party/licenses/opentelemetry-api/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "third_party/licenses/pycparser/licenses/LICENSE": "0a9e78156ae8b96caf1b4f11ac2df424b83de29736f9e757630548a6272fdf90",
+    "third_party/licenses/pydantic/licenses/LICENSE": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3",
+    "third_party/licenses/pydantic_core/licenses/LICENSE": "2afdd30d54b4d62b6f488a6bcc1546e84ec5061f13f4209c03d012348783795a",
+    "third_party/licenses/python-multipart/licenses/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "third_party/licenses/starlette/licenses/LICENSE.md": "dcb95677a02240243187e964f941847d19b17821cf99e5afae684fab328c19bf",
+    "third_party/licenses/typing-inspection/licenses/LICENSE": "804b59b25f2c31bd278f9202a19ae49a3945aa2664387e2d0a128c7cacc61ec3",
+    "third_party/licenses/typing_extensions/licenses/LICENSE": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf",
+    "third_party/licenses/uvicorn/licenses/LICENSE.md": "efe1acf3e62fb99c288b0ec73e5a773b7268ef4320fe757ea994214e4b63c371"
+  },
+  "repository_only_files": [
+    ".dockerignore",
+    ".env.example",
+    ".gitattributes",
+    ".github/workflows/ci.yaml",
+    ".gitignore",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "Dockerfile",
+    "GITHUB_FILES.txt",
+    "Install-Windows.ps1",
+    "README.md",
+    "README_PL.md",
+    "README_RU.md",
+    "README_UK.md",
+    "SECURITY.md",
+    "Start-Windows.cmd",
+    "Start-Windows.ps1",
+    "app/release.py",
+    "compose.yaml",
+    "docs/analysis-audit.md",
+    "docs/architecture.md",
+    "docs/authentication.md",
+    "docs/backups.md",
+    "docs/distribution-0.7.5.json",
+    "docs/distribution-0.7.5.md",
+    "docs/installation.md",
+    "docs/licensing.md",
+    "docs/publication-checks.md",
+    "docs/restore.md",
+    "docs/uninstall.md",
+    "docs/updates.md",
+    "docs/user-guide.md",
+    "requirements-dev.txt",
+    "scripts/build_linux_installer.py",
+    "scripts/build_release.py",
+    "scripts/docker_prepare.py",
+    "scripts/docker_upgrade.py",
+    "scripts/run_tests.py",
+    "scripts/verify_container.py",
+    "scripts/verify_installation.py",
+    "tests/test_interface_access.py",
+    "tests/test_lan_network.py",
+    "tests/test_linux_installer_config.py",
+    "tests/test_release_startup.py",
+    "tests/test_stage2.py",
+    "tests/test_stage3.py",
+    "tests/test_stage4.py",
+    "tests/test_stage5.py",
+    "tests/test_stage6.py",
+    "tests/test_stage7.py"
+  ],
+  "archive_only_files": [
+    "release-manifest.json"
+  ],
+  "runtime_difference": "app/release.py is a development-only exporter; all other application source, templates, assets and locales match",
+  "dependencies_reviewed": 26,
+  "license": "Project Time Machine Non-Commercial License 1.0",
+  "author": "Oleksandr",
+  "contact": "omtimemachineom@gmail.com",
+  "copyright": "© 2026 Oleksandr",
+  "outer_files_sha256": {
+    "project-time-machine-0.7.5-linux.tar.gz": "fe349bc1160ca1d460ed7c75ae9542b95f55d77a8f24c0473ed34399a5366964",
+    "INSTALL.md": "5bd745191e85b77752b92840114a339fd48525e9c07ba02ff8f7b8780d6103de",
+    "INSTALL_EN.md": "05e3c36f943c649d4a118a2a0f1eb14ae4eb4f743a1004956dd067abcb45075c",
+    "INSTALL_PL.md": "fc0bb0f21495147675927d8b4989da81f80d46cf596346fe8019714de6705e59",
+    "INSTALL_UK.md": "d6e375283cfd379294d966bfe6bee29919fca6bb6f763c95febc229929827785"
+  },
+  "checked_archive_markdown_links": [
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/aiofiles/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/aiofiles/licenses/NOTICE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/annotated-doc/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/annotated-types/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/anyio/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/argon2-cffi/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/argon2-cffi-bindings/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/certifi/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/cffi/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/click/licenses/LICENSE.txt"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/cryptography/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/cryptography/licenses/LICENSE.APACHE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/cryptography/licenses/LICENSE.BSD"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/fastapi/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/h11/licenses/LICENSE.txt"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/httpcore/licenses/LICENSE.md"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/httpx/licenses/LICENSE.md"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/idna/licenses/LICENSE.md"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/Jinja2/licenses/LICENSE.txt"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/MarkupSafe/licenses/LICENSE.txt"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/opentelemetry-api/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/pycparser/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/pydantic/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/pydantic_core/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/python-multipart/licenses/LICENSE.txt"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/starlette/licenses/LICENSE.md"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/typing_extensions/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/typing-inspection/licenses/LICENSE"
+    ],
+    [
+      "THIRD_PARTY_NOTICES.md",
+      "third_party/licenses/uvicorn/licenses/LICENSE.md"
+    ]
+  ],
+  "secret_scan": {
+    "status": "passed",
+    "findings": [],
+    "git_history": "not_present"
+  },
+  "functional_tests_run": false,
+  "installed_application_touched": false,
+  "compression_toolchain": {
+    "python": "3.10.12",
+    "zlib": "1.2.11",
+    "zlib_runtime": "1.2.11"
+  },
+  "reproduction": {
+    "method": "Build again from an isolated git checkout-index export using the public packaging script; compare all six output files byte-for-byte",
+    "byte_identical": true,
+    "no_private_inputs": true
+  },
+  "github_files_list": "GITHUB_FILES.txt"
+}
