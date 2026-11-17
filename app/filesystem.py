@@ -84,7 +84,9 @@ def validate_project(value,cfg):
     if origin is not None:
         # Only an already pinned, private application staging inode is represented here.
         resolved=origin
-    else:resolved=p.resolve(strict=True)
+    else:
+        if forbidden(p):raise ValueError('Системный каталог или каталог учётных данных запрещён')
+        resolved=p.resolve(strict=True)
     if forbidden(resolved): raise ValueError('Системный каталог или каталог учётных данных запрещён')
     roots=[absolute(r) for r in cfg.allowed_roots]
     # Do not turn a swapped symlink root into a new authorization, and an offline

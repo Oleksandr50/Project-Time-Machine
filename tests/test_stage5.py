@@ -399,6 +399,19 @@ jobs.execute(os.environ['PTM_RESTORE_TEST_JOB'])
         self.assertEqual(PRIVATE_FDS.get(),{})
         with self.assertRaises(ValueError):validate_project('/proc/self/fd/0',self.cfg)
 
+    def test_forbidden_pipe_path_and_missing_allowed_directory_have_distinct_errors(self):
+        from app.filesystem import validate_project
+        read_fd,write_fd=os.pipe()
+        try:
+            with self.assertRaises(ValueError):
+                validate_project('/proc/self/fd/'+str(read_fd),self.cfg)
+        finally:
+            os.close(read_fd);os.close(write_fd)
+        with self.assertRaises(ValueError):
+            validate_project('/proc/ptm-nonexistent-project',self.cfg)
+        with self.assertRaises(FileNotFoundError):
+            validate_project(self.source/'missing-project',self.cfg)
+
     def test_multi_component_exclusion_preserves_nested_registered_project(self):
         (self.source/'outer').mkdir();nested=self.source/'outer/inner';nested.mkdir();(nested/'data').write_text('saved')
         point=self.create();projects.add_project(str(nested));(nested/'data').write_text('private current data')
