@@ -3,7 +3,7 @@
 Report vulnerabilities privately to **omtimemachineom@gmail.com**. Include the affected
 version, impact and a sanitized reproduction using synthetic data. Do not post real
 keys, databases, logs or private backups in public issues. No response-time guarantee
-is currently published. Version 0.7.5 is the current review target.
+is currently published. Version 0.7.6 is the current review target.
 
 Native Linux installation binds all IPv4 interfaces by default. Network initial setup
 requires an owner-only one-time code. There is no default administrator password.

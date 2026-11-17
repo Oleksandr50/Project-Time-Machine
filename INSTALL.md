@@ -1,4 +1,4 @@
-# Project Time Machine 0.7.5 — Linux
+# Project Time Machine 0.7.6 — Linux
 
 ## Установка
 
@@ -10,8 +10,8 @@
 
 ```sh
 sha256sum -c SHA256SUMS
-tar -xzf project-time-machine-0.7.5-linux.tar.gz
-cd project-time-machine-0.7.5
+tar -xzf project-time-machine-0.7.6-linux.tar.gz
+cd project-time-machine-0.7.6
 ./install.sh
 ```
 

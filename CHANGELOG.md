@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.6 — path validation and installation verification
+
+- Reject forbidden system paths before resolving special procfs descriptors; preserve allowed-root, symlink and project boundary checks.
+- Create the disposable installation verification project outside protected installation storage and explicitly allow its parent directory.
+- Preserve existing accounts, configuration, project history and backups during updates; no database schema changes.
+
 ## 0.7.5 — publication preparation
 
 - Record Oleksandr as author and copyright holder, © 2026 Oleksandr.
