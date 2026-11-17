@@ -58,7 +58,8 @@ def main():
             assert denied.returncode!=0
             request('/setup');password=secrets.token_urlsafe(32)
             request('/setup',dict(username='installation-test',password=password,confirm_password=password,language='en'))
-            project=prefix/'projects/demo';project.mkdir();(project/'code.py').write_text('def value():\n    return 7\n')
+            project=root/'projects/demo';project.mkdir(parents=True);(project/'code.py').write_text('def value():\n    return 7\n')
+            manage('allow-root',str(project.parent))
             url,_=request('/projects/add',dict(name='Disposable',path=str(project),category='Python'));pid=int(parse_qs(urlsplit(url).query)['project_id'][0])
             request('/actions/analyze?project_id='+str(pid),dict(description='installation snapshot'))
             request('/actions/backup?project_id='+str(pid),{});wait_jobs(pid)
