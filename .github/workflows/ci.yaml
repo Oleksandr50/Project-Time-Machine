@@ -32,8 +32,10 @@ jobs:
           persist-credentials: false
       - shell: pwsh
         run: |
-          foreach ($path in @('Install-Windows.ps1', 'Start-Windows.ps1')) {
+          foreach ($path in @('Install-Windows.ps1', 'Start-Windows.ps1', 'scripts/windows-wsl.ps1', 'tests/windows_wsl_mock.ps1')) {
             $errors = $null; $tokens = $null
             [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $pwd $path), [ref]$tokens, [ref]$errors) | Out-Null
             if ($errors.Count) { throw ($errors | Out-String) }
           }
+      - shell: pwsh
+        run: ./tests/windows_wsl_mock.ps1

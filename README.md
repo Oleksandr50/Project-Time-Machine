@@ -5,7 +5,7 @@
 Local project history, verified backups and confirmed recovery through a web interface.
 FastAPI, Jinja2 and SQLite; Linux with Python 3.11–3.13. The interface supports English,
 Russian, Polish and Ukrainian. Native Windows binaries are not provided; WSL2 is the
-Linux-based Windows route. Docker configuration is included.
+Linux-based Windows route. See the [Windows/WSL2 guide](docs/windows-wsl.md). Docker configuration is included.
 
 ## Install and use
 

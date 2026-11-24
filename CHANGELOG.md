@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — Windows/WSL2 launchers
+
+- Align install/start paths with the Linux installer, support a shared custom prefix and preserve the existing port during updates.
+- Validate the exact Ubuntu distribution, WSL2 and non-root Linux account; retain Linux diagnostics and open the browser only after successful startup/status.
+- Add executable mocked PowerShell scenarios and English/Russian Windows 10/11 instructions. Real Windows/WSL2 acceptance testing remains required.
+
 ## 0.7.7 — compact lists and confirmed deletion
 
 - Bound dashboard/job lists to four visible entries and backup tables to five rows with internal scrolling.

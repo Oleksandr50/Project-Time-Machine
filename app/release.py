@@ -12,9 +12,9 @@ ROOT=Path(__file__).resolve().parents[1]
 ROOT_FILES=('install.sh','setup.sh','start.sh','INSTALL.md','INSTALL_EN.md','INSTALL_PL.md','INSTALL_UK.md','Install-Windows.ps1','Start-Windows.ps1','Start-Windows.cmd','Dockerfile','compose.yaml',
             '.env.example','.dockerignore','.gitignore','.gitattributes','requirements.txt','requirements.lock','requirements-dev.txt',
             'CHANGELOG.md','CONTRIBUTING.md','SECURITY.md','LICENSE','AUTHORS','COPYRIGHT','THIRD_PARTY_NOTICES.md','README_RU.md','README_PL.md','README_UK.md')
-PUBLIC_SCRIPTS=('install.py','manage.py','setup.py','start.py','docker_prepare.py','docker_upgrade.py','verify_installation.py','verify_container.py','run_tests.py','generate_backup_key.py','build_release.py','build_linux_installer.py')
-PUBLIC_TESTS=('test_deletions.py','test_interface_access.py','test_lan_network.py','test_release_startup.py','test_linux_installer_config.py','test_stage2.py','test_stage3.py','test_stage4.py','test_stage5.py','test_stage6.py','test_stage7.py')
-PUBLIC_DOCS=('installation.md','user-guide.md','updates.md','uninstall.md','licensing.md','authentication.md','backups.md','restore.md','analysis-audit.md','publication-checks.md')
+PUBLIC_SCRIPTS=('windows-wsl.ps1','install.py','manage.py','setup.py','start.py','docker_prepare.py','docker_upgrade.py','verify_installation.py','verify_container.py','run_tests.py','generate_backup_key.py','build_release.py','build_linux_installer.py')
+PUBLIC_TESTS=('test_windows_wsl.py','test_deletions.py','test_interface_access.py','test_lan_network.py','test_release_startup.py','test_linux_installer_config.py','test_stage2.py','test_stage3.py','test_stage4.py','test_stage5.py','test_stage6.py','test_stage7.py')
+PUBLIC_DOCS=('windows-wsl.md','windows-wsl_RU.md','installation.md','user-guide.md','updates.md','uninstall.md','licensing.md','authentication.md','backups.md','restore.md','analysis-audit.md','publication-checks.md')
 
 
 def inventory(root=ROOT):
@@ -26,6 +26,7 @@ def inventory(root=ROOT):
     for name in ROOT_FILES:result[name]=root/name
     for name in PUBLIC_SCRIPTS:result['scripts/'+name]=root/'scripts'/name
     for name in PUBLIC_TESTS:result['tests/'+name]=root/'tests'/name
+    result['tests/windows_wsl_mock.ps1']=root/'tests/windows_wsl_mock.ps1'
     for name in PUBLIC_DOCS:result['docs/'+name]=root/'docs'/name
     result['README.md']=root/'docs/README-public.md' if (root/'docs/README-public.md').exists() else root/'README.md'
     result['docs/architecture.md']=root/'docs/architecture-public.md' if (root/'docs/architecture-public.md').exists() else root/'docs/architecture.md'

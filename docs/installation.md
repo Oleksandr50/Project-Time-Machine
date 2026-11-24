@@ -15,3 +15,5 @@ No prebuilt container or bundled third-party binary is included in this reposito
 
 Windows uses WSL2 Linux storage and the supplied PowerShell launchers. It is not a native
 Windows executable. Python, Docker and operating-system components retain their own licenses.
+
+For Windows 10/11, follow the [step-by-step WSL2 guide](windows-wsl.md).
