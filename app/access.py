@@ -13,6 +13,8 @@ PROJECT_READ={'/projects','/restore','/compare/text','/','/timeline','/snapshots
               '/logs/view','/sqlite','/backups','/backups/download','/report','/api/status','/api/jobs'}
 PROJECT_WRITE={'/actions/analyze','/actions/backup','/actions/verify','/actions/cancel','/audit/review'}
 PROJECT_ADMIN={'/projects/add','/projects/edit','/projects/remove','/backups/policy','/backups/schedule','/backups/protect','/backups/cleanup'}
+PROJECT_ADMIN.update(('/projects/delete-preview','/projects/delete','/backups/delete-preview','/backups/delete'))
+GLOBAL_WRITE.update(('/projects/delete-preview','/projects/delete'))
 PROJECT_RESTORE={'/restore/preview','/restore/confirm','/restore/recovery-preview'}
 PROJECT_READ.update(('/restore/preview','/audit/export'))
 PROXY_HEADERS={'forwarded','x-forwarded-for','x-forwarded-host','x-forwarded-proto','x-real-ip'}

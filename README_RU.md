@@ -1,4 +1,4 @@
-# Project Time Machine 0.7.6
+# Project Time Machine 0.7.7
 
 [English](README.md) · [Polski](README_PL.md) · [Українська](README_UK.md)
 

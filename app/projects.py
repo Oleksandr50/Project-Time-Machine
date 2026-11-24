@@ -82,13 +82,17 @@ def add_project(value,name='',description='',category='other'):
                 raise ValueError('engine.restore_target')
             if os.path.lexists(work) and (inside(path,work) or inside(work,path)) and not (old and old['id']==operation['project_id']):
                 raise ValueError('engine.restore_target')
+        if old:
+            from .deletions import pending
+            if pending(old['id']):raise ValueError('delete.pending')
         if old and old['enabled']: raise ValueError('Проект уже отслеживается')
         now=utcnow()
         if old:
             conn.execute('UPDATE projects SET enabled=1,updated_at=? WHERE id=?',(now,old['id']))
             return old['id']
-        pid=conn.execute('INSERT INTO projects(path,name,description,category,created_at,updated_at,scan_settings,exclusion_rules) VALUES(?,?,?,?,?,?,?,?)',
-            (str(path),name.strip() or path.name,description,category.strip(),now,now,json.dumps(base_settings.scan_settings),json.dumps(base_settings.exclusion_rules))).lastrowid
+        next_id=conn.execute('SELECT coalesce(max(value),0)+1 FROM (SELECT id AS value FROM projects UNION ALL SELECT project_id FROM user_audit)').fetchone()[0]
+        pid=conn.execute('INSERT INTO projects(id,path,name,description,category,created_at,updated_at,scan_settings,exclusion_rules) VALUES(?,?,?,?,?,?,?,?,?)',
+            (next_id,str(path),name.strip() or path.name,description,category.strip(),now,now,json.dumps(base_settings.scan_settings),json.dumps(base_settings.exclusion_rules))).lastrowid
         conn.execute('UPDATE projects SET history_path=?,backup_path=?,report_path=? WHERE id=?',
             (str(base_settings.data_dir/'projects'/str(pid)/'history.sqlite'),
              str(base_settings.backups_dir/'projects'/str(pid)),str(base_settings.reports_dir/'projects'/str(pid)),pid))

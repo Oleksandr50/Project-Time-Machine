@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.7 — compact lists and confirmed deletion
+
+- Bound dashboard/job lists to four visible entries and backup tables to five rows with internal scrolling.
+- Add administrator-only confirmed deletion of disabled projects and individual backups, durable cleanup journals and incremental/restore dependency guards.
+- Add all new messages in English, Russian, Polish and Ukrainian. No database schema change.
+
+
 ## 0.7.6 — path validation and installation verification
 
 - Reject forbidden system paths before resolving special procfs descriptors; preserve allowed-root, symlink and project boundary checks.

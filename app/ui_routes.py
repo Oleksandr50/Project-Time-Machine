@@ -17,7 +17,7 @@ from urllib.parse import urlencode
 
 router=APIRouter()
 SNAPSHOT_COLS=[C('id','common.id'),C('created_at','common.date','date'),C('description','common.description'),C('content_status','common.type','state'),C('total_files','common.files','number'),C('python_files','common.python','number'),C('functions_count','common.functions','number'),C('classes_count','common.classes','number'),C('changes_from_prev','common.changes','number')]
-BACKUP_COLS=[C('id','common.id'),C('created_at','common.date','date'),C('kind','common.type','backup_kind'),C('snapshot_id','common.snapshot'),C('archive_path','common.path','path'),C('archive_size','common.size','bytes'),C('sha256','common.hash','hash'),C('availability','backup.availability','state'),C('download','backup.download','download')]
+BACKUP_COLS=[C('id','common.id'),C('created_at','common.date','date'),C('kind','common.type','backup_kind'),C('snapshot_id','common.snapshot'),C('archive_path','common.path','path'),C('archive_size','common.size','bytes'),C('sha256','common.hash','hash'),C('availability','backup.availability','state'),C('download','delete.actions','backup_actions')]
 EVENT_COLS=[C('created_at','common.date','date'),C('event_type','common.type','event'),C('path_a','common.path','path'),C('path_b','compare.b','path'),C('comment','common.description','message')]
 FILE_COLS=[C('path','common.path','file_link'),C('file_type','common.type','file'),C('size','common.size','bytes'),C('mtime','common.modified','epoch'),C('sha256','common.hash','hash'),C('lines','common.lines','number')]
 FUNCTION_COLS=[C('risk_level','audit.risk','risk'),C('qualname','common.name'),C('path','common.path','path'),C('lineno','common.line','number'),C('kind','common.type','entity'),C('signature','audit.signature','path'),C('analyzer_id','analysis.adapter'),C('file_category','analysis.scope','scope')]
@@ -70,20 +70,21 @@ def dashboard(request:Request):
                 last_backup=max(last_backup or b['created_at'],b['created_at'])
                 if availability_for(b['archive_path'],cfg)=='Available':totals['archives']+=1;totals['volume']+=b['archive_size']
                 elif not Path(b['archive_path']).exists():totals['missing']+=1
-            for row in conn.execute('SELECT * FROM file_events ORDER BY id DESC LIMIT 6'):
+            for row in conn.execute('SELECT * FROM file_events ORDER BY created_at DESC,id DESC LIMIT 100'):
                 recent.append(dict(row,project_name=project['name'],project_id=project['id']))
             row=conn.execute('SELECT id FROM snapshots '+('WHERE backup_point_id IS NULL ' if 'backup_point_id' in columns else '')+'ORDER BY id DESC LIMIT 1').fetchone()
             if row:
-                for warning in conn.execute("SELECT severity,path,message FROM audit_findings WHERE snapshot_id=? AND severity IN ('critical','high') LIMIT 4",(row[0],)):
-                    warnings.append(dict(warning,project_name=project['name']))
+                for warning in conn.execute("SELECT a.severity,a.path,a.message,a.rowid AS id,coalesce((SELECT min(s.created_at) FROM audit_findings f JOIN snapshots s ON s.id=f.snapshot_id WHERE f.fingerprint=a.fingerprint AND a.fingerprint!=''),snap.created_at) AS discovered FROM audit_findings a JOIN snapshots snap ON snap.id=a.snapshot_id WHERE a.snapshot_id=? AND a.severity IN ('critical','high') ORDER BY discovered DESC,a.rowid DESC LIMIT 100",(row[0],)):
+                    warnings.append(dict(warning,project_name=project['name'],project_id=project['id']))
         except (sqlite3.Error,OSError):warnings.append({'message':'dashboard.db_error','severity':'info','path':'','project_name':project['name']})
         finally:
             if conn:conn.close()
-    recent=sorted(recent,key=lambda r:r['created_at'],reverse=True)[:8]
+    recent=sorted(recent,key=lambda r:(r['created_at'],r['project_id'],r['id']),reverse=True)[:100]
+    warnings=sorted(warnings,key=lambda r:(r.get('discovered',''),r.get('project_id',0),r.get('id',0)),reverse=True)
     from . import jobs
     dashboard_jobs=sorted([row for p in request.state.projects for row in jobs.polled_jobs(p['id'])],
-                          key=lambda r:(r['state'] in ('queued','running'),r['created_at']),reverse=True)[:6]
-    return render(request,'index.html',title_key='nav.dashboard',totals=totals,last_analysis=last_analysis,last_backup=last_backup,recent=recent,warnings=warnings[:8],dashboard_jobs=dashboard_jobs)
+                          key=lambda r:(r['created_at'],r['id']),reverse=True)[:100]
+    return render(request,'index.html',title_key='nav.dashboard',totals=totals,last_analysis=last_analysis,last_backup=last_backup,recent=recent,warnings=warnings[:100],dashboard_jobs=dashboard_jobs)
 
 
 def availability_for(path,cfg):

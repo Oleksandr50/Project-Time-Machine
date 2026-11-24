@@ -1,4 +1,4 @@
-# Architecture — 0.7.6
+# Architecture — 0.7.7
 
 FastAPI serves Jinja2 templates with local CSS/JavaScript and four JSON locale dictionaries.
 No external CDN, embedded font library or vendored frontend package is used.

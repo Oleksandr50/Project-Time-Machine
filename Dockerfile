@@ -1,6 +1,6 @@
 FROM python:3.11-slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PTM_CONFIG=/config/settings.json PTM_HOST=127.0.0.1 PTM_PORT=13011 PTM_MANAGED_ID=container PTM_CONTAINER=1
-LABEL org.opencontainers.image.title="Project Time Machine" org.opencontainers.image.version="0.7.6"
+LABEL org.opencontainers.image.title="Project Time Machine" org.opencontainers.image.version="0.7.7"
 WORKDIR /opt/project-time-machine
 COPY requirements.lock ./requirements.lock
 RUN pip install --no-cache-dir --disable-pip-version-check -r requirements.lock

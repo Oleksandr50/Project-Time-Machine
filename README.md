@@ -1,4 +1,4 @@
-# Project Time Machine 0.7.6
+# Project Time Machine 0.7.7
 
 [Русский](README_RU.md) · [Polski](README_PL.md) · [Українська](README_UK.md)
 
@@ -9,7 +9,16 @@ Linux-based Windows route. Docker configuration is included.
 
 ## Install and use
 
-Download or clone the source, open its directory and run as your normal Linux user:
+Download the Linux installer from [GitHub Releases](https://github.com/Oleksandr50/Project-Time-Machine/releases).
+Verify its checksum, extract it and open the extracted directory:
+
+```sh
+sha256sum --ignore-missing -c SHA256SUMS
+tar -xzf project-time-machine-0.7.7-linux.tar.gz
+cd project-time-machine-0.7.7
+```
+
+From the extracted installer or a cloned source checkout, run as your normal Linux user:
 
 ```sh
 ./install.sh
@@ -42,11 +51,51 @@ not automatically excluded. See [English installation](INSTALL_EN.md),
 - SQLite Backup API capture, optional AES-GCM with external keys, shared exclusion rules.
 - Confirmed restore with preview, verified pre-restore insurance, staging and recovery journal.
 - Python AST analysis, heuristic security audit, masked reports, bounded logs and SQLite viewing.
+- Compact dashboard activity and backup task history with internal scrolling, plus a scrollable archive table with sticky headers.
+- Administrator-confirmed removal of disabled projects and individual archives, with dependency checks, cleanup journals and an audit trail.
+
+Removing a project from PTM does **not** delete its source directory or source files.
+Archives required by dependent incremental backups or retained restore references cannot
+be deleted individually. Protected backups and active operations also block deletion.
 
 Ordinary files changing during capture can prevent publication of a backup. SQLite
 consistency is per database, not a transaction across multiple services. Whole-project
 atomic overwrite is not guaranteed; stop project writes before restore. Metadata-only
 snapshots cannot restore missing contents. Secret masking does not recognize every secret.
+
+## Screenshots
+
+Real application screenshots supplied by the owner. Project names and paths are
+shown with the owner's permission.
+
+### Overview
+
+![Project overview with compact recent activity](docs/screenshots/overview.png)
+
+### Projects
+
+![Local project registry](docs/screenshots/projects.png)
+
+### Backups
+
+![Backup archives and recovery points](docs/screenshots/backups.png)
+
+### Compare
+
+![Snapshot comparison](docs/screenshots/compare.png)
+
+A Code Analysis screenshot will be added when supplied. See the
+[screenshot guide](docs/screenshots/README.md).
+
+## Documentation
+
+[User guide](docs/user-guide.md) · [Installation](docs/installation.md) ·
+[Updates](docs/updates.md) · [Backup guide](docs/backups.md) ·
+[Restore guide](docs/restore.md) · [Authentication](docs/authentication.md) ·
+[Analysis and audit](docs/analysis-audit.md) · [Uninstall](docs/uninstall.md).
+
+Interface languages: **English, Russian, Polish and Ukrainian**. Installation guides
+and translated READMEs are linked above.
 
 ## Author and license
 

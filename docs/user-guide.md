@@ -20,3 +20,12 @@
 Metadata Only не означает recoverable. Backup создаёт отдельный Recoverable snapshot
 только после проверки сохранённых байтов. Исчезнувший archive остаётся Missing в истории.
 Подробности: backups.md, restore.md, analysis-audit.md.
+# Version 0.7.7: compact history and confirmed deletion
+
+Dashboard activity, warnings and job lists show at most four entries before internal scrolling. The backup table shows at most five data rows with sticky column headers; search, sorting and pagination remain available. Older records are retained in history.
+
+Administrators can permanently delete a disabled project from Projects. The confirmation page shows its name and source path and requires the exact project name. Cancellation changes nothing. Deletion removes only the project's PTM-managed state, archives and verified owned restore workspaces; the source files and global audit remain. Running operations or unfinished recovery block deletion. Noncanonical legacy storage bindings require a separate reviewed migration and are rejected by automatic deletion.
+
+Administrators can delete an individual backup from its Actions column after confirming its ID. Protected points, incremental parents, active jobs and references from restore history or live previews block deletion. No automatic cascade is performed. Independent metadata snapshots remain; snapshots tied to the removed point become unavailable.
+
+Deletion has a durable journal under the configured state directory's `deletions` folder. A filesystem/database error is reported as failure. Open a new confirmation to retry incomplete cleanup. A project undergoing incomplete cleanup cannot be reattached. Safety checkpoints made before application updates remain independent and are not erased by project deletion.

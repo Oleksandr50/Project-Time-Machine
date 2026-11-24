@@ -76,7 +76,7 @@ def cancel(jid,pid,actor):
 
 def job_rows(pid):
     with projects.registry() as conn:
-        return [dict(r) for r in conn.execute('SELECT * FROM jobs WHERE project_id=? ORDER BY created_at DESC LIMIT 100',(pid,))]
+        return [dict(r) for r in conn.execute('SELECT * FROM jobs WHERE project_id=? ORDER BY created_at DESC,id DESC LIMIT 100',(pid,))]
 
 
 def job_page(pid,page=1):

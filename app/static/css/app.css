@@ -25,3 +25,19 @@ html[data-theme=light]{color-scheme:light;--bg:#f3f5f8;--sidebar:#fff;--surface:
 .audit-explanation { margin-top: .6rem; }
 .audit-explanation h4 { margin: .7rem 0 .3rem; }
 .audit-explanation p { margin: 0 0 .6rem; }
+
+/* Shared bounded activity lists; measured rows respect translated and scaled text. */
+.compact-list .empty-inline{padding:12px 0}
+.compact-list{overflow-y:auto;min-height:0;overscroll-behavior:contain;scrollbar-gutter:stable}
+.compact-list .activity-row{min-width:0;align-items:center;padding:10px 0;gap:8px}
+.compact-list .activity-body{min-width:0;flex:1;overflow:hidden}
+.compact-list .activity-body strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.compact-list .activity-body>span{display:block;font-size:.75rem}
+.compact-list .activity-row time{flex:none;white-space:nowrap;font-size:.65rem}
+.compact-list .warning-row p{min-width:0;overflow:hidden;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.compact-list .warning-row{padding:10px 0;align-items:center}
+.compact-list .compact-job{margin:0;padding:10px 0;border-bottom:1px solid var(--border)}
+.compact-job small{display:block}.compact-list .job-row{padding:10px 0}.compact-list .job-row p{margin:4px 0}
+.archive-actions{display:flex;gap:6px;align-items:center;white-space:nowrap}.archive-actions form{margin:0}
+.archive-table thead th{position:sticky;top:0;z-index:2;background:var(--surface)}
+@media(max-width:480px){.compact-list .activity-row time{max-width:100px;overflow:hidden;text-overflow:ellipsis}.compact-list .key-value{flex-wrap:wrap}}

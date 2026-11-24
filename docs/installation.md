@@ -1,6 +1,6 @@
 # Installation
 
-Use the maintained 0.7.6 instructions in your language:
+Use the maintained 0.7.7 instructions in your language:
 [English](../INSTALL_EN.md), [Русский](../INSTALL.md),
 [Polski](../INSTALL_PL.md), [Українська](../INSTALL_UK.md).
 

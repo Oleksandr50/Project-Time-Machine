@@ -35,7 +35,7 @@
 {% set chosen=request.query_params.get('columns','').split(',') %}
 <section class="table-card" data-table data-table-key="{{ request.url.path }}-{{ table.columns[0].key }}">
 <div class="table-toolbar"><span class="muted">{{ t('common.results',total=table.total) }}</span><details class="column-picker"><summary>{{ t('common.columns') }}</summary><div>{% for c in table.columns %}<label><input type="checkbox" data-column-toggle="{{ c.key }}" {% if chosen==[''] or c.key in chosen %}checked{% endif %}>{{ t(c.label) }}</label>{% endfor %}</div></details></div>
-<div class="table-scroll" tabindex="0" role="region" aria-label="{{ t(title_key or 'common.results',total=table.total) }}"><table class="table"><thead><tr>{% for c in table.columns %}<th scope="col" data-column="{{ c.key }}" {% if chosen!=[''] and c.key not in chosen %}hidden{% endif %}><a href="{{ page_url(sort=c.key,order='asc' if table.sort!=c.key or table.order=='desc' else 'desc',page=1) }}">{{ t(c.label) }}{% if table.sort==c.key %} {{ '↑' if table.order=='asc' else '↓' }}{% endif %}</a></th>{% endfor %}</tr></thead><tbody>
+<div class="table-scroll{% if request.url.path=='/backups' %} archive-table{% endif %}" {% if request.url.path=='/backups' %}data-visible-limit="5"{% endif %} tabindex="0" role="region" aria-label="{{ t(title_key or 'common.results',total=table.total) }}"><table class="table"><thead><tr>{% for c in table.columns %}<th scope="col" data-column="{{ c.key }}" {% if chosen!=[''] and c.key not in chosen %}hidden{% endif %}><a href="{{ page_url(sort=c.key,order='asc' if table.sort!=c.key or table.order=='desc' else 'desc',page=1) }}">{{ t(c.label) }}{% if table.sort==c.key %} {{ '↑' if table.order=='asc' else '↓' }}{% endif %}</a></th>{% endfor %}</tr></thead><tbody>
 {% for row in table.rows %}<tr>{% for c in table.columns %}{% set v=row.get(c.key) %}<td data-column="{{ c.key }}" {% if chosen!=[''] and c.key not in chosen %}hidden{% endif %}>
 {% if c.kind=='hash' %}{{ text(v,22) }}
 {% elif c.kind=='path' %}{{ text(v|redact if c.key=='signature' else v) }}
@@ -58,6 +58,7 @@
 {% elif c.kind=='entity' %}{{ t('entity.' ~ v) }}
 {% elif c.kind=='audit_category' %}{{ t('audit.category.' ~ v) }}
 {% elif c.kind=='change' %}{{ badge(v,'compare.') }}
+{% elif c.kind=='backup_actions' %}<div class="archive-actions">{% if v %}<a class="btn small" href="{{ url('/backups/download',id=v) }}">{{ t('backup.download') }}</a>{% endif %}{% if request.state.user.role=='administrator' %}<form method="post" action="{{ url('/backups/delete-preview') }}">{{ csrf() }}<input type="hidden" name="archive_id" value="{{ row.id }}"><button class="btn small danger-ghost">{{ t('delete.archive') }}</button></form>{% endif %}</div>
 {% elif c.kind=='download' %}{% if v %}<a class="btn small" href="{{ url('/backups/download',id=v) }}">{{ t('backup.download') }}</a>{% else %}—{% endif %}
 {% elif c.kind=='file_link' %}<div class="copy-value"><a class="truncate mono" title="{{ v }}" href="{{ url('/file',snapshot_id=snapshot_id,path=v) }}">{{ v|compact(55) }}</a><button type="button" class="icon-button" data-copy="{{ v }}" aria-label="{{ t('common.copy') }}">⧉</button></div>
 {% elif c.kind=='project_link' %}<a class="project-name" href="{{ url('/',project_id=row.id) }}">{{ v }}</a>

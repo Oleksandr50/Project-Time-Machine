@@ -8,10 +8,10 @@
 <label>{{ t('common.description') }}<input name="description" maxlength="4000"></label><button type="submit" class="btn primary">{{ t('engine.queue') }}</button></form>
 <form method="post" action="{{ url('/actions/verify') }}" class="actions">{{ m.csrf() }}<button class="btn" type="submit">{{ t('engine.verify_all') }}</button></form></section>{% endif %}
 <section class="card"><div class="section-heading"><h2>{{ t('dashboard.tasks') }}</h2><a class="btn small" href="{{ url('/backups') }}">{{ t('engine.refresh') }}</a></div>
-<div data-job-list data-jobs-url="{{ url('/api/jobs') }}">
+<div class="compact-list" data-visible-limit="4" data-job-list data-jobs-url="{{ url('/api/jobs') }}">
 {% for job in jobs %}<div class="job-row" data-job-id="{{ job.id }}" data-job-state="{{ job.state }}">
 <div class="key-value"><strong>{{ t('engine.task.' ~ job.task) }}{% if job.task=='backup' %} · {{ t('engine.kind.' ~ job.kind) }}{% endif %}</strong><span class="badge" data-job-label>{{ t('engine.state.' ~ job.state) }}</span></div>
-<p class="muted">{{ job.created_at|utc }} · {{ job.description }}</p>
+<p class="muted truncate" title="{{ job.description }}">{{ job.created_at|utc }}{% if job.description %} · {{ job.description }}{% endif %}</p>
 {% if job.state in ['queued','running'] %}<progress data-job-progress max="{{ [job.total_bytes,1]|max }}" value="{{ job.progress_bytes }}"></progress><p data-job-counts>{{ job.progress_files }} / {{ job.total_files }} · {{ job.progress_bytes|bytes }} / {{ job.total_bytes|bytes }}</p>
 {% if request.state.user.role in ['administrator','operator'] %}<form method="post" action="{{ url('/actions/cancel') }}">{{ m.csrf() }}<input type="hidden" name="job_id" value="{{ job.id }}"><button class="btn small" type="submit">{{ t('engine.cancel') }}</button></form>{% endif %}
 {% endif %}{% if job.error_code %}<p class="notice warning">{{ t('engine.' ~ job.error_code) }}</p>{% endif %}</div>

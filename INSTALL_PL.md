@@ -1,4 +1,4 @@
-# Project Time Machine 0.7.6 — Linux
+# Project Time Machine 0.7.7 — Linux
 
 ## Instalacja
 
@@ -8,8 +8,8 @@ użytkownik, bez sudo. Istniejący Python z uv jest wykrywany automatycznie.
 
 ```sh
 sha256sum -c SHA256SUMS
-tar -xzf project-time-machine-0.7.6-linux.tar.gz
-cd project-time-machine-0.7.6
+tar -xzf project-time-machine-0.7.7-linux.tar.gz
+cd project-time-machine-0.7.7
 ./install.sh
 ```
 

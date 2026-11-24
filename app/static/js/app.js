@@ -116,3 +116,23 @@
     if (event.persisted) location.reload();
   });
 })();
+
+(() => {
+  const measure = () => document.querySelectorAll('[data-visible-limit]').forEach(box => {
+    const rows = [...(box.querySelector('tbody')?.children || box.children)];
+    const limit = Number(box.dataset.visibleLimit);
+    if (rows.length <= limit) { box.style.maxHeight = ''; return; }
+    const bottom = rows[limit - 1].getBoundingClientRect().bottom;
+    box.style.maxHeight = `${Math.ceil(bottom - box.getBoundingClientRect().top + box.scrollTop)}px`;
+  });
+  window.addEventListener('resize', measure);
+  document.fonts?.ready.then(measure);
+  document.querySelectorAll('[data-visible-limit]').forEach(box => new MutationObserver(measure).observe(box, {childList:true,subtree:true}));
+  document.querySelectorAll('[data-exact-form]').forEach(form => {
+    const field = form.querySelector('[data-exact]');
+    const button = form.querySelector('[data-exact-submit]');
+    const update = () => { button.disabled = field.value !== field.dataset.exact; };
+    field.addEventListener('input', update);update();
+  });
+  measure();
+})();

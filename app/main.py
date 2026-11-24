@@ -49,6 +49,8 @@ from .backup_routes import router as backup_router
 app.include_router(backup_router)
 from .restore_routes import router as restore_router
 app.include_router(restore_router)
+from .deletion_routes import router as deletion_router
+app.include_router(deletion_router)
 
 
 @app.post('/projects/add')

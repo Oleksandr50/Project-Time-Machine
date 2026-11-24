@@ -13,7 +13,7 @@ ROOT_FILES=('install.sh','setup.sh','start.sh','INSTALL.md','INSTALL_EN.md','INS
             '.env.example','.dockerignore','.gitignore','.gitattributes','requirements.txt','requirements.lock','requirements-dev.txt',
             'CHANGELOG.md','CONTRIBUTING.md','SECURITY.md','LICENSE','AUTHORS','COPYRIGHT','THIRD_PARTY_NOTICES.md','README_RU.md','README_PL.md','README_UK.md')
 PUBLIC_SCRIPTS=('install.py','manage.py','setup.py','start.py','docker_prepare.py','docker_upgrade.py','verify_installation.py','verify_container.py','run_tests.py','generate_backup_key.py','build_release.py','build_linux_installer.py')
-PUBLIC_TESTS=('test_interface_access.py','test_lan_network.py','test_release_startup.py','test_linux_installer_config.py','test_stage2.py','test_stage3.py','test_stage4.py','test_stage5.py','test_stage6.py','test_stage7.py')
+PUBLIC_TESTS=('test_deletions.py','test_interface_access.py','test_lan_network.py','test_release_startup.py','test_linux_installer_config.py','test_stage2.py','test_stage3.py','test_stage4.py','test_stage5.py','test_stage6.py','test_stage7.py')
 PUBLIC_DOCS=('installation.md','user-guide.md','updates.md','uninstall.md','licensing.md','authentication.md','backups.md','restore.md','analysis-audit.md','publication-checks.md')
 
 

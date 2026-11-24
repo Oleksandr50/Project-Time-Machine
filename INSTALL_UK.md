@@ -1,4 +1,4 @@
-# Project Time Machine 0.7.6 — Linux
+# Project Time Machine 0.7.7 — Linux
 
 ## Встановлення
 
@@ -8,8 +8,8 @@ Ubuntu: `sudo apt install python3-venv`. Запускайте інсталято
 
 ```sh
 sha256sum -c SHA256SUMS
-tar -xzf project-time-machine-0.7.6-linux.tar.gz
-cd project-time-machine-0.7.6
+tar -xzf project-time-machine-0.7.7-linux.tar.gz
+cd project-time-machine-0.7.7
 ./install.sh
 ```
 
